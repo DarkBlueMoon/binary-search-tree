@@ -26,6 +26,19 @@ class Tree
     root
   end
 
+  # def insert(value)
+  #   # Create a new node w/ that value
+  #   node = Node.new(value)
+  #   # Insert that node as a leaf node.
+  # end
+
+  def find(value, search_root = @root)
+    # Base case
+    return search_root if search_root.data == value
+    return find(value, search_root.left) if value < search_root.data
+    return find(value, search_root.right) if value > search_root.data
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -35,3 +48,4 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts tree.pretty_print
+p tree.find(23)
