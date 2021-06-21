@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'node'
+require 'pry'
 
 # A Balanced BST class.
 class Tree
@@ -39,6 +40,41 @@ class Tree
     node
   end
 
+  def delete(value, root = @root)
+    return root if root.nil? # Tree is empty or node is not found.
+
+    # Find the root we want to delete, if it exists.
+    if value > root.data
+      root.right = delete(value, root.right)
+    elsif value < root.data
+      root.left = delete(value, root.left)
+    else
+      # binding.pry
+      if leaf_node?(root)
+        return nil
+      elsif root.left.nil?
+        temp = root.right
+        root = nil
+        return temp
+      elsif root.right.nil?
+        temp = root.left
+        root = nil
+        return temp
+      end
+
+      temp = find_min(root.right)
+      root.data = temp.data
+      root.right = delete(temp.data, root.right)
+    end
+    root
+  end
+
+  def find_min(node)
+    current = node
+    current = current.left until current.left.nil?
+    current
+  end
+
   def find(value, node = @root)
     return node if node.data == value
     return nil if node.nil?
@@ -57,10 +93,13 @@ class Tree
   end
 end
 
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.insert(0)
-tree.insert(489)
-tree.insert(12_345)
-tree.insert(0)
-tree.insert(489)
-puts tree.pretty_print
+tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 5, 7, 9, 67, 6345, 324, 3])
+# tree = Tree.new([12, 5, 15, 3, 7, 13, 17, 1, 9, 14, 20, 8, 11, 18])
+# tree.insert(0)
+# tree.insert(489)
+# tree.insert(12_345)
+# tree.insert(0)
+# tree.insert(489)
+tree.pretty_print
+tree.delete(4)
+tree.pretty_print
