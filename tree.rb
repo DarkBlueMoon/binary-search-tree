@@ -49,18 +49,9 @@ class Tree
     elsif value < root.data
       root.left = delete(value, root.left)
     else
-      # binding.pry
-      if leaf_node?(root)
-        return nil
-      elsif root.left.nil?
-        temp = root.right
-        root = nil
-        return temp
-      elsif root.right.nil?
-        temp = root.left
-        root = nil
-        return temp
-      end
+      # Node w/ only one child or no children
+      return root.right if root.left.nil?
+      return root.left if root.right.nil?
 
       temp = find_min(root.right)
       root.data = temp.data
@@ -82,10 +73,6 @@ class Tree
     return find(value, node.right) if value > node.data
   end
 
-  def leaf_node?(node)
-    node.left.nil? && node.right.nil?
-  end
-
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -101,5 +88,6 @@ tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 5, 7, 9, 67, 6345, 324, 3])
 # tree.insert(0)
 # tree.insert(489)
 tree.pretty_print
-tree.delete(4)
+tree.delete(1)
+tree.delete(8)
 tree.pretty_print
