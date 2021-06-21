@@ -26,17 +26,28 @@ class Tree
     root
   end
 
-  # def insert(value)
-  #   # Create a new node w/ that value
-  #   node = Node.new(value)
-  #   # Insert that node as a leaf node.
-  # end
+  def insert(value, node = @root)
+    return Node.new(value) if node.nil?
+    return node if node.data == value
 
-  def find(value, search_root = @root)
-    # Base case
-    return search_root if search_root.data == value
-    return find(value, search_root.left) if value < search_root.data
-    return find(value, search_root.right) if value > search_root.data
+    if value > node.data
+      node.right = insert(value, node.right)
+    elsif value < node.data
+      node.left = insert(value, node.left)
+    end
+
+    node
+  end
+
+  def find(value, node = @root)
+    return node if node.data == value
+    return nil if node.nil?
+    return find(value, node.left) if value < node.data
+    return find(value, node.right) if value > node.data
+  end
+
+  def leaf_node?(node)
+    node.left.nil? && node.right.nil?
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -47,5 +58,9 @@ class Tree
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+tree.insert(0)
+tree.insert(489)
+tree.insert(12_345)
+tree.insert(0)
+tree.insert(489)
 puts tree.pretty_print
-p tree.find(23)
