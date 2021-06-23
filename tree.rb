@@ -89,10 +89,42 @@ class Tree
     visited
   end
 
+  # Traverse the tree in preorder depth-first order, returning an array of values. (root, left, right)
+  def preorder(node = @root, arr = [])
+    return if node.nil?
+
+    arr << node.data
+    # print "#{node.data} "
+    preorder(node.left, arr)
+    preorder(node.right, arr)
+
+    arr
+  end
+
+  # Traverse the tree in inorder depth-first order, returning an array of values. (left, root, right)
+  def inorder(node = @root, arr = [])
+    return if node.nil?
+
+    inorder(node.left, arr)
+    arr << node.data
+    inorder(node.right, arr)
+
+    arr
+  end
+
+  # Traverse the tree in postorder depth-first order, returning an array of values. (left, right, root)
+  def postorder(node = @root, arr = [])
+    return if node.nil?
+
+    postorder(node.left, arr)
+    postorder(node.right, arr)
+    arr << node.data
+
+    arr
+  end
+
   # def level_order_recursive(node = @root)
   #   return if node.nil?
-
-
   # end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -104,4 +136,7 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 5, 7, 9, 67, 6345, 324, 3])
 tree.pretty_print
-p tree.level_order_iter
+# p tree.level_order_iter
+p tree.preorder
+p tree.inorder
+p tree.postorder
