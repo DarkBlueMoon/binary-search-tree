@@ -73,6 +73,28 @@ class Tree
     return find(value, node.right) if value > node.data
   end
 
+  # Traverse the tree in breadth-first order, returning an array of values. (iterative)
+  def level_order_iter
+    visited = []
+    discovered = []
+    discovered << root
+
+    until discovered.empty?
+      current = discovered.shift
+      visited << current.data
+      discovered << current.left unless current.left.nil?
+      discovered << current.right unless current.right.nil?
+    end
+
+    visited
+  end
+
+  # def level_order_recursive(node = @root)
+  #   return if node.nil?
+
+
+  # end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -81,13 +103,5 @@ class Tree
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 5, 7, 9, 67, 6345, 324, 3])
-# tree = Tree.new([12, 5, 15, 3, 7, 13, 17, 1, 9, 14, 20, 8, 11, 18])
-# tree.insert(0)
-# tree.insert(489)
-# tree.insert(12_345)
-# tree.insert(0)
-# tree.insert(489)
 tree.pretty_print
-tree.delete(1)
-tree.delete(8)
-tree.pretty_print
+p tree.level_order_iter
