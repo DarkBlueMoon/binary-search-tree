@@ -89,6 +89,14 @@ class Tree
     visited
   end
 
+  # def level_order_recursive(node = @root, visited = [], discovered = [])
+  #   return if node.nil?
+
+  #   discovered << node
+
+  #   visited
+  # end
+
   # Traverse the tree in preorder depth-first order, returning an array of values. (root, left, right)
   def preorder(node = @root, arr = [])
     return if node.nil?
@@ -123,8 +131,29 @@ class Tree
     arr
   end
 
-  # def level_order_recursive(node = @root)
+  def height(node_val, node = find(node_val))
+    return if node.nil?
+
+    ret = 0
+
+    until node.left.nil?
+      node = node.left
+      ret += 1
+    end
+    until node.right.nil?
+      node = node.right
+      ret += 1
+    end
+
+    ret
+  end
+
+  # def depth(node_val, node = find(node_val))
   #   return if node.nil?
+
+  #   ret = 0
+
+
   # end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -136,7 +165,8 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 5, 7, 9, 67, 6345, 324, 3])
 tree.pretty_print
+p tree.height(324)
 # p tree.level_order_iter
-p tree.preorder
-p tree.inorder
-p tree.postorder
+# p tree.preorder
+# p tree.inorder
+# p tree.postorder
